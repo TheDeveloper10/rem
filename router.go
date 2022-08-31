@@ -1,20 +1,29 @@
 package rem
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type Router struct {
-	routes []Route
+	routes []IRoute
 }
 
 // Create a new route
-func (r *Router) NewRoute() *Route {
-	return &Route{
+func (r *Router) NewBasicRoute(url string) IRoute {
+	route := BasicRoute{
+		url:      url,
 		handlers: []Handler{},
 		methods:  []string{},
 	}
+	r.routes = append(r.routes, &route)
+
+	return &route
 }
 
 // Handle HTTP requests
-func (r *Router) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-
+func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	//response := WrapHTTPResponseWriter(res)
+	//request := NewBasicRequest(req)
+	//
+	//req.URL
 }
