@@ -45,10 +45,10 @@ func TestRouterBasic(t *testing.T) {
 }
 
 func createRouter1() *Router {
-	router := CreateDefaultRouter()
+	router := NewRouter()
 
 	router.
-		NewBasicRoute("/basic-test").
+		NewRoute("/basic-test").
 		GetRoute(func(res IResponse, req IRequest) bool {
 			res.Status(http.StatusOK)
 			return true

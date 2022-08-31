@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func CreateDefaultRouter() *Router {
+func NewRouter() *Router {
 	return &Router {
 		routes: []IRoute{},
 	}
@@ -21,7 +21,7 @@ func (r *Router) AddRoute(route IRoute) IRoute {
 }
 
 // Create and add a new basic route
-func (r *Router) NewBasicRoute(url string) IRoute {
+func (r *Router) NewRoute(url string) IRoute {
 	return r.AddRoute(NewBasicRoute(url))
 }
 

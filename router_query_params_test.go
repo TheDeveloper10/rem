@@ -25,10 +25,10 @@ func TestRouterQueryParams(t *testing.T) {
 }
 
 func createRouter2() *Router {
-	router := CreateDefaultRouter()
+	router := NewRouter()
 
 	router.
-		NewBasicRoute("/query-single-int-param-test").
+		NewRoute("/query-single-int-param-test").
 		GetRoute(func(res IResponse, req IRequest) bool {
 			v := req.GetQueryParameters().Get("v")
 
@@ -46,7 +46,7 @@ func createRouter2() *Router {
 		})
 
 	router.
-		NewBasicRoute("/query-multi-int-param-test").
+		NewRoute("/query-multi-int-param-test").
 		PostRoute(func(res IResponse, req IRequest) bool {
 			v1 := req.GetQueryParameters().Get("v1")
 			v2 := req.GetQueryParameters().Get("v2")

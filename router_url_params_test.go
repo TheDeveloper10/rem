@@ -57,10 +57,10 @@ func TestRouterURLParams(t *testing.T) {
 }
 
 func createRouter3() *Router {
-	router := CreateDefaultRouter()
+	router := NewRouter()
 
 	router.
-		NewBasicRoute("/url-test-1/:testId").
+		NewRoute("/url-test-1/:testId").
 		GetRoute(func(res IResponse, req IRequest) bool {
 			testId, ok := req.GetURLParameters()["testId"]
 			if !ok {
@@ -80,7 +80,7 @@ func createRouter3() *Router {
 		})
 
 	router.
-		NewBasicRoute("/url-test-2/:a/:g/").
+		NewRoute("/url-test-2/:a/:g/").
 		PostRoute(func(res IResponse, req IRequest) bool {
 			a, ok := req.GetURLParameters()["a"]
 			if !ok {
@@ -109,7 +109,7 @@ func createRouter3() *Router {
 		})
 
 	router.
-		NewBasicRoute("/url-test-3/:userId/data/").
+		NewRoute("/url-test-3/:userId/data/").
 		DeleteRoute(func(res IResponse, req IRequest) bool {
 			userId, ok := req.GetURLParameters()["userId"]
 			if !ok {
