@@ -1,7 +1,5 @@
 package rem
 
-import "net/http"
-
 type BasicRoute struct {
 	url      string
 	handlers []Handler
@@ -9,26 +7,35 @@ type BasicRoute struct {
 }
 
 // AddHandle can be used for adding middlewares or just the endpoint handling function
-func (r *BasicRoute) AddHandle(handler Handler) *BasicRoute {
-	r.handlers = append(r.handlers, handler)
-	return r
+func (br *BasicRoute) AddHandle(handler Handler) *BasicRoute {
+	br.handlers = append(br.handlers, handler)
+	return br
 }
 
-func (r *BasicRoute) Match(method string, url string) int {
+func (br *BasicRoute) Match(method string, url string) int {
 	methodMatch := false
-	for _, m := range r.methods {
+	for _, m := range br.methods {
 		if m == method {
 			methodMatch = true
 			break
 		}
 	}
 	if !methodMatch {
-		return http.StatusMethodNotAllowed
+		return routeMethodMismatch
 	}
 
-	return http.StatusOK
+	if url == br.url {
+		return routePerfectMatch
+	} else {
+		return routeMismatch
+	}
 }
 
-func (r *BasicRoute) Handle(response IResponse, request IRequest) {
-
+func (br *BasicRoute) Handle(response IResponse, request IRequest) {
+	for _, handler := range br.handlers {
+		status := handler(response, request)
+		if !status {
+			return
+		}
+	}
 }

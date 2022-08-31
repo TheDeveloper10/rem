@@ -1,3 +1,3 @@
 package rem
 
-type Handler func(writer *IResponse, request *IRequest) bool
+type Handler func(writer IResponse, request IRequest) bool
