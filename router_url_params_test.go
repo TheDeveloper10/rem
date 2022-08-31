@@ -60,7 +60,7 @@ func createRouter3() *Router {
 	router := CreateDefaultRouter()
 
 	router.
-		NewVariableRoute("/url-test-1/:testId").
+		NewBasicRoute("/url-test-1/:testId").
 		GetRoute(func(res IResponse, req IRequest) bool {
 			testId, ok := req.GetURLParameters()["testId"]
 			if !ok {
@@ -80,7 +80,7 @@ func createRouter3() *Router {
 		})
 
 	router.
-		NewVariableRoute("/url-test-2/:a/:g/").
+		NewBasicRoute("/url-test-2/:a/:g/").
 		PostRoute(func(res IResponse, req IRequest) bool {
 			a, ok := req.GetURLParameters()["a"]
 			if !ok {
@@ -109,7 +109,7 @@ func createRouter3() *Router {
 		})
 
 	router.
-		NewVariableRoute("/url-test-3/:userId/data/").
+		NewBasicRoute("/url-test-3/:userId/data/").
 		DeleteRoute(func(res IResponse, req IRequest) bool {
 			userId, ok := req.GetURLParameters()["userId"]
 			if !ok {

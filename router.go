@@ -25,11 +25,6 @@ func (r *Router) NewBasicRoute(url string) IRoute {
 	return r.AddRoute(NewBasicRoute(url))
 }
 
-// Create and add a new variable route
-func (r *Router) NewVariableRoute(url string) IRoute {
-	return r.AddRoute(NewVariableRoute(url))
-}
-
 // Handle HTTP requests
 func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	response := WrapHTTPResponseWriter(res)
