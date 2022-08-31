@@ -20,6 +20,10 @@ func (br *BasicRoute) SetMethods(methods ...string) IRoute {
 
 // This method compares incoming path to the allowed path of the route
 func (br *BasicRoute) Match(method string, url string) int {
+	if url != br.url {
+		return routeMismatch
+	}
+
 	methodMatch := false
 	for _, m := range br.methods {
 		if m == method {
@@ -27,14 +31,10 @@ func (br *BasicRoute) Match(method string, url string) int {
 			break
 		}
 	}
-	if !methodMatch {
-		return routeMethodMismatch
-	}
-
-	if url == br.url {
+	if methodMatch {
 		return routePerfectMatch
 	} else {
-		return routeMismatch
+		return routeMethodMismatch
 	}
 }
 
