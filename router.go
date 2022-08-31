@@ -14,15 +14,20 @@ type Router struct {
 	routes []IRoute
 }
 
-// Create a new route
-func (r *Router) NewBasicRoute(url string) IRoute {
-	route := BasicRoute{
-		url:       url,
-		endpoints: map[string][]Handler{},
-	}
-	r.routes = append(r.routes, &route)
+// Add a new route to the router
+func (r *Router) AddRoute(route IRoute) IRoute {
+	r.routes = append(r.routes, route)
+	return route
+}
 
-	return &route
+// Create and add a new basic route
+func (r *Router) NewBasicRoute(url string) IRoute {
+	return r.AddRoute(NewBasicRoute(url))
+}
+
+// Create and add a new variable route
+func (r *Router) NewVariableRoute(url string) IRoute {
+	return r.AddRoute(NewVariableRoute(url))
 }
 
 // Handle HTTP requests
@@ -30,9 +35,11 @@ func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	response := WrapHTTPResponseWriter(res)
 	request := NewBasicRequest(req)
 
+	targetURL := request.GetURL()
 	for _, route := range r.routes {
-		status := route.Match(request.GetURL())
+		status := route.Match(targetURL)
 		if status {
+			request.setURLParameters(route.extractURLParameters(targetURL))
 			route.handle(response, request)
 			return
 		}

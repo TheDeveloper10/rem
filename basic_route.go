@@ -2,6 +2,13 @@ package rem
 
 import "net/http"
 
+func NewBasicRoute(url string) *BasicRoute {
+	return &BasicRoute{
+		url: url,
+		endpoints: map[string][]Handler{},
+	}
+}
+
 type BasicRoute struct {
 	url      string
 	endpoints map[string][]Handler
@@ -26,6 +33,10 @@ func (br *BasicRoute) handle(response IResponse, request IRequest) {
 			return
 		}
 	}
+}
+
+func (br *BasicRoute) extractURLParameters(url string) *map[string]string {
+	return &map[string]string{}
 }
 
 func (br *BasicRoute) setHandlers(method string, handlers []Handler) IRoute {

@@ -13,6 +13,7 @@ type IRequest interface {
 	GetHeaders() http.Header
 	GetCookies() []*http.Cookie
 	GetURLParameters() map[string]string
+	setURLParameters(*map[string]string)
 	GetQueryParameters() url.Values
 	GetBody() io.ReadCloser
 }
