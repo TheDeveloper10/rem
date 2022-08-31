@@ -56,7 +56,7 @@ func cleanPath(p string) string {
 	np := path.Clean(p)
 	// path.Clean removes trailing slash except for root;
 	// put the trailing slash back if necessary.
-	if p[len(p)-1] == '/' && np != "/" {
+	if np[len(np)-1] != '/' {
 		np += "/"
 	}
 

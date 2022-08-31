@@ -6,7 +6,7 @@ import (
 
 func NewVariableRoute(url string) *VariableRoute {
 	route := VariableRoute{}
-	route.initFromURL(url)
+	route.initFromURL(cleanPath(url))
 	return &route
 }
 

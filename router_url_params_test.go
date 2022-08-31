@@ -28,11 +28,27 @@ func TestRouterURLParams(t *testing.T) {
 		{ "/url-test-2/qwe/b", http.MethodPost, nil, http.StatusUnprocessableEntity },
 		{ "/url-test-2/qwe/b/", http.MethodPost, nil, http.StatusUnprocessableEntity },
 		{ "/url-test-2/qwe/ewq", http.MethodPost, nil, http.StatusOK },
+		{ "/url-test-2/qwe/ewq", http.MethodGet, nil, http.StatusMethodNotAllowed },
 		{ "/url-test-2/qwe/ewq/", http.MethodPost, nil, http.StatusOK },
 		{ "/url-test-2/1/2", http.MethodPost, nil, http.StatusAccepted },
 		{ "/url-test-2/1/2/", http.MethodPost, nil, http.StatusAccepted },
 		{ "/url-test-2/2/1", http.MethodPost, nil, http.StatusUnprocessableEntity },
 		{ "/url-test-2/2/1/", http.MethodPost, nil, http.StatusUnprocessableEntity },
+
+		{ "/url-test-3/", http.MethodGet, nil, http.StatusNotFound },
+		{ "/url-test-3/", http.MethodDelete, nil, http.StatusNotFound },
+		{ "/url-test-3//data/", http.MethodDelete, nil, http.StatusNotFound },
+		{ "/url-test-3/data/data", http.MethodDelete, nil, http.StatusUnprocessableEntity },
+		{ "/url-test-3/data/data", http.MethodGet, nil, http.StatusMethodNotAllowed },
+		{ "/url-test-3/data/data2", http.MethodDelete, nil, http.StatusNotFound },
+		{ "/url-test-3/data/adata", http.MethodDelete, nil, http.StatusNotFound },
+		{ "/url-test-3/123/data", http.MethodDelete, nil, http.StatusOK },
+		{ "/url-test-3/123//data///", http.MethodDelete, nil, http.StatusOK },
+		{ "/url-test-3/h///data", http.MethodDelete, nil, http.StatusUnauthorized },
+		{ "/url-test-3//h/data", http.MethodDelete, nil, http.StatusUnauthorized },
+		{ "/url-test-3///h/data", http.MethodDelete, nil, http.StatusUnauthorized },
+		{ "/url-test-3/test12345test/data", http.MethodDelete, nil, http.StatusAccepted },
+		{ "/url-test-3/test12345test/data/", http.MethodDelete, nil, http.StatusAccepted },
 	}
 
 	// test for route /a/b/:
@@ -84,6 +100,28 @@ func createRouter3() *Router {
 			} else if a == "qwe" && g == "ewq" {
 				res.Status(http.StatusOK)
 			} else if a == "1" && g == "2" {
+				res.Status(http.StatusAccepted)
+			} else {
+				res.Status(http.StatusUnprocessableEntity)
+			}
+
+			return true
+		})
+
+	router.
+		NewVariableRoute("/url-test-3/:userId/data/").
+		DeleteRoute(func(res IResponse, req IRequest) bool {
+			userId, ok := req.GetURLParameters()["userId"]
+			if !ok {
+				res.Status(http.StatusBadRequest)
+				return true
+			}
+
+			if userId == "123" {
+				res.Status(http.StatusOK)
+			} else if userId == "h" {
+				res.Status(http.StatusUnauthorized)
+			} else if userId == "test12345test" {
 				res.Status(http.StatusAccepted)
 			} else {
 				res.Status(http.StatusUnprocessableEntity)

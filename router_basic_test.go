@@ -26,7 +26,7 @@ func runTests(t *testing.T, tests *[]routerTest, router *Router) {
 		res := rec.Result()
 
 		if res.StatusCode != test.expectedStatus {
-			t.Errorf("TestId: %v\tExpected Status: %v\tReceived Status: %v", testId, test.expectedStatus, res.StatusCode)
+			t.Errorf("TestId: %v\tURL: %v\tExpected Status: %v\tReceived Status: %v", testId, test.url, test.expectedStatus, res.StatusCode)
 		}
 	}
 }

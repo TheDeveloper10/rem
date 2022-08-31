@@ -4,7 +4,7 @@ import "net/http"
 
 func NewBasicRoute(url string) *BasicRoute {
 	return &BasicRoute{
-		url: url,
+		url: cleanPath(url),
 		endpoints: map[string][]Handler{},
 	}
 }
