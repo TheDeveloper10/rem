@@ -6,12 +6,19 @@ type BasicRoute struct {
 	methods  []string
 }
 
-// AddHandle can be used for adding middlewares or just the endpoint handling function
-func (br *BasicRoute) AddHandle(handler Handler) *BasicRoute {
-	br.handlers = append(br.handlers, handler)
+// This method sets all handlers on this route (that may include middlewares and endpoint functions)
+func (br *BasicRoute) SetHandlers(handlers ...Handler) IRoute {
+	br.handlers = handlers
 	return br
 }
 
+// This method sets all allowed methods on this route
+func (br *BasicRoute) SetMethods(methods ...string) IRoute {
+	br.methods = methods
+	return br
+}
+
+// This method compares incoming path to the allowed path of the route
 func (br *BasicRoute) Match(method string, url string) int {
 	methodMatch := false
 	for _, m := range br.methods {
@@ -31,7 +38,8 @@ func (br *BasicRoute) Match(method string, url string) int {
 	}
 }
 
-func (br *BasicRoute) Handle(response IResponse, request IRequest) {
+// This method manages the incoming request
+func (br *BasicRoute) handle(response IResponse, request IRequest) {
 	for _, handler := range br.handlers {
 		status := handler(response, request)
 		if !status {

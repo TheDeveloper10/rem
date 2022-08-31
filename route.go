@@ -1,8 +1,10 @@
 package rem
 
 type IRoute interface {
+	SetHandlers(handlers ...Handler) IRoute
+	SetMethods(methods ...string) IRoute
 	Match(method string, url string) int
-	Handle(response IResponse, request IRequest)
+	handle(response IResponse, request IRequest)
 }
 
 const (

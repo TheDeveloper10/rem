@@ -29,6 +29,27 @@ func (r *Router) NewBasicRoute(url string) IRoute {
 	return &route
 }
 
+func (r *Router) GetRoute(url string, handlers ...Handler) IRoute {
+	return r.NewBasicRoute(url).SetMethods(http.MethodGet).SetHandlers(handlers...)
+}
+
+func (r *Router) PostRoute(url string, handlers ...Handler) IRoute {
+	return r.NewBasicRoute(url).SetMethods(http.MethodPost).SetHandlers(handlers...)
+}
+
+func (r *Router) PatchRoute(url string, handlers ...Handler) IRoute {
+	return r.NewBasicRoute(url).SetMethods(http.MethodPatch).SetHandlers(handlers...)
+}
+
+func (r *Router) PutRoute(url string, handlers ...Handler) IRoute {
+	return r.NewBasicRoute(url).SetMethods(http.MethodPut).SetHandlers(handlers...)
+}
+
+func (r *Router) DeleteRoute(url string, handlers ...Handler) IRoute {
+	return r.NewBasicRoute(url).SetMethods(http.MethodDelete).SetHandlers(handlers...)
+}
+
+
 // Handle HTTP requests
 func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	response := WrapHTTPResponseWriter(res)
@@ -38,7 +59,7 @@ func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	for _, route := range r.routes {
 		status := route.Match(request.GetMethod(), request.GetURL())
 		if status == routePerfectMatch {
-			route.Handle(response, request)
+			route.handle(response, request)
 			return
 		} else if status == routeMethodMismatch {
 			finalStatusCode = http.StatusMethodNotAllowed
