@@ -29,6 +29,10 @@ func TestRouter(t *testing.T) {
 		{ 7, "/query-single-int-param-test?v=1", http.MethodGet, nil, http.StatusOK },
 		{ 8, "/query-single-int-param-test?v=2", http.MethodGet, nil, http.StatusAccepted },
 		{ 9, "/query-single-int-param-test?v=3", http.MethodGet, nil, http.StatusForbidden },
+		{ 10, "/query-multi-int-param-test", http.MethodPost, nil, http.StatusBadRequest },
+		{ 11, "/query-multi-int-param-test?v1=88", http.MethodPost, nil, http.StatusCreated },
+		{ 12, "/query-multi-int-param-test?v2=44", http.MethodPost, nil, http.StatusAccepted },
+		{ 13, "/query-multi-int-param-test?v1=15&v2=35", http.MethodPost, nil, http.StatusOK },
 	}
 
 	for _, test := range tests {
@@ -79,12 +83,24 @@ func createRouter() *Router {
 			return true
 		})
 
-	//router.
-	//	NewBasicRoute("/query-multi-int-param-test").
-	//	PostRoute(func(res IResponse, req IRequest) bool {
-	//
-	//		return true
-	//	})
+	router.
+		NewBasicRoute("/query-multi-int-param-test").
+		PostRoute(func(res IResponse, req IRequest) bool {
+			v1 := req.GetQueryParameters().Get("v1")
+			v2 := req.GetQueryParameters().Get("v2")
+
+			if v1 == "15" && v2 == "35" {
+				res.Status(http.StatusOK)
+			} else if v1 == "88" && v2 == "" {
+				res.Status(http.StatusCreated)
+			} else if v1 == "" && v2 == "44" {
+				res.Status(http.StatusAccepted)
+			} else {
+				res.Status(http.StatusBadRequest)
+			}
+
+			return true
+		})
 
 	return router
 }
