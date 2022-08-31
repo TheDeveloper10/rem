@@ -17,15 +17,18 @@ type routerTest struct {
 
 func TestRouter(t *testing.T) {
 	router := CreateDefaultRouter()
-	router.GetRoute("/basic-test", func(res IResponse, req IRequest) bool {
+
+	router.
+	NewBasicRoute("/basic-test").
+	GetRoute(func(res IResponse, req IRequest) bool {
 		res.Status(http.StatusOK)
 		return true
-	})
-	router.PostRoute("/basic-test", func(res IResponse, req IRequest) bool {
+	}).
+	PostRoute(func(res IResponse, req IRequest) bool {
 		res.Status(http.StatusCreated)
 		return true
 	})
-	
+
 	tests := []routerTest{
 		{ 0, "/basic-test", http.MethodGet, nil, http.StatusOK },
 		{ 1, "/basic-test", http.MethodPost, nil, http.StatusCreated },

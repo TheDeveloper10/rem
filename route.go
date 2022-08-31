@@ -1,14 +1,12 @@
 package rem
 
 type IRoute interface {
-	SetHandlers(handlers ...Handler) IRoute
-	SetMethods(methods ...string) IRoute
-	Match(method string, url string) int
+	Match(url string) bool
 	handle(response IResponse, request IRequest)
-}
 
-const (
-	routePerfectMatch = 0
-	routeMethodMismatch = 1
-	routeMismatch = 2
-)
+	GetRoute(handlers ...Handler) IRoute
+	PostRoute(handlers ...Handler) IRoute
+	PatchRoute(handlers ...Handler) IRoute
+	PutRoute(handlers ...Handler) IRoute
+	DeleteRoute(handlers ...Handler) IRoute
+}
