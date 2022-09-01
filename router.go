@@ -27,7 +27,7 @@ func (r *Router) NewRoute(url string) IRoute {
 
 // Handle HTTP requests
 func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	response := WrapHTTPResponseWriter(res)
+	response := NewHTTPResponseWriter(res)
 	request := NewBasicRequest(req)
 
 	targetURL := request.GetURL()
@@ -36,9 +36,11 @@ func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		if status {
 			request.setURLParameters(route.extractURLParameters(targetURL))
 			route.handle(response, request)
+			response.flush()
 			return
 		}
 	}
 
 	response.Status(http.StatusNotFound)
+	response.flush()
 }

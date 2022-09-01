@@ -56,6 +56,7 @@ func runNoBodyRouterTests(t *testing.T, tests *[]noBodyRouterTest, router *Route
 type expectedHeadersRouterTest struct {
 	url 			string
 	method 			string
+	expectedStatus int
 	expectedHeaders map[string]string
 }
 
@@ -69,6 +70,10 @@ func (ehrt *expectedHeadersRouterTest) PerformTest(testId int, router *Router) e
 	router.ServeHTTP(rec, req)
 	res := rec.Result()
 
+	if res.StatusCode != ehrt.expectedStatus {
+		return fmt.Errorf("TestId: %v\tURL: %v\tExpected Status: %v\tReceived Status: %v", testId, ehrt.url, ehrt.expectedStatus, res.StatusCode)
+	}
+
 	for k, v := range ehrt.expectedHeaders {
 		header := res.Header.Get(k)
 		if header == "" {
@@ -77,10 +82,6 @@ func (ehrt *expectedHeadersRouterTest) PerformTest(testId int, router *Router) e
 			return fmt.Errorf("TestId: %v\tExpected Header: '%v: %v'\tReceived Header: '%v: %v'", testId, k, v, k, header)
 		}
 	}
-
-	//if res.StatusCode != ehrt.expectedStatus {
-	//	return fmt.Errorf("TestId: %v\tURL: %v\tExpected Status: %v\tReceived Status: %v", testId, nbrt.url, nbrt.expectedStatus, res.StatusCode)
-	//}
 
 	return nil
 }

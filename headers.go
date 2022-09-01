@@ -2,8 +2,8 @@ package rem
 
 type Headers map[string][]string
 
-func (h Headers) Get(key string) (*string, bool) {
-	header, ok := h[key]
+func (h *Headers) Get(key string) (*string, bool) {
+	header, ok := (*h)[key]
 	if ok {
 		res := ""
 		if len(header) > 0 {
@@ -14,4 +14,8 @@ func (h Headers) Get(key string) (*string, bool) {
 	} else {
 		return nil, false
 	}
+}
+
+func (h *Headers) Set(key string, value string) {
+	(*h)[key] = []string{value}
 }
