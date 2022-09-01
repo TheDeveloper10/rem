@@ -20,7 +20,7 @@ type IResponse interface {
 func NewHTTPResponseWriter(rw http.ResponseWriter) IResponse {
 	return &HTTPResponseWriterWrapper{
 		rw: 		rw,
-		statusCode: http.StatusOK,
+		statusCode: http.StatusInternalServerError,
 		body: 	 	nil,
 	}
 }

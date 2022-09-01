@@ -7,7 +7,7 @@ import (
 
 func NewBasicRoute(url string) *BasicRoute {
 	route := BasicRoute{
-		url: cleanPath(url),
+		url: 	   cleanPath(url),
 		endpoints: map[string][]Handler{},
 	}
 	route.initFromURL(url)

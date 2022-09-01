@@ -11,6 +11,9 @@ func TestRouterHeaders(t *testing.T) {
 	tests := []expectedHeadersRouterTest{
 		{ "/headers-test-1", http.MethodGet, http.StatusMethodNotAllowed, nil },
 		{ "/headers-test-1/", http.MethodPost, http.StatusOK, map[string]string { "Content-Type": "application/json" } },
+		{ "/headers-test-1/17j/", http.MethodPost, http.StatusCreated, map[string]string { "Content-Type": "application/json", "Content-Encoding": "gzip" } },
+		{ "/headers-test-1/z", http.MethodPost, http.StatusUnauthorized, map[string]string { "Access-Control-Allow-Origin": "*", "Last-Modified": "yesterday" } },
+		{ "/headers-test-1/f", http.MethodPost, http.StatusForbidden, map[string]string{} },
 	}
 
 	runExpectedHeadersRouterTests(t, &tests, router)
@@ -25,6 +28,33 @@ func createRouter4() *Router {
 			res.
 				Status(http.StatusOK).
 				JSON(dummyTestData{ val: 17, str: "testing" })
+			return true
+		})
+
+	router.
+		NewRoute("/headers-test-1/:userId/").
+		PostRoute(func(res IResponse, req IRequest) bool {
+			userId, ok := req.GetURLParameters()["userId"]
+			if !ok {
+				res.Status(http.StatusBadRequest)
+				return true
+			}
+
+			if userId == "17j" {
+				res.
+					Status(http.StatusCreated).
+					Header("Content-Encoding", "gzip").
+					JSON(dummyTestData{str: "123", val: 12})
+			} else if userId == "z" {
+				res.
+					Header("Access-Control-Allow-Origin", "*").
+					Text("hi!").
+					Status(http.StatusUnauthorized).
+					Header("Last-Modified", "yesterday") // I know it's not according to the standard. I just want it to be shorter
+			} else {
+				res.Status(http.StatusForbidden)
+			}
+
 			return true
 		})
 
