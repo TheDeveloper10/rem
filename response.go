@@ -10,14 +10,13 @@ type IResponse interface {
 	Bytes(data []byte) IResponse
 	Text(text string) IResponse
 	JSON(data interface{}) IResponse
-	flush()
 }
 
 // -----------------------------------------
 // Response Factories
 // -----------------------------------------
 
-func NewHTTPResponseWriter(rw http.ResponseWriter) IResponse {
+func NewHTTPResponseWriter(rw http.ResponseWriter) *HTTPResponseWriterWrapper {
 	return &HTTPResponseWriterWrapper{
 		rw: 		rw,
 		statusCode: http.StatusInternalServerError,

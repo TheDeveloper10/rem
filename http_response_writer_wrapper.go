@@ -37,7 +37,7 @@ func (w *HTTPResponseWriterWrapper) Text(text string) IResponse {
 	return w.Bytes([]byte(text))
 }
 
-// Write JSON to the body (also updates Content-Type header)
+// Write JSON to the body (also sets Content-Type header)
 func (w *HTTPResponseWriterWrapper) JSON(data interface{}) IResponse {
 	bytes, err := json.Marshal(data)
 	if err != nil {
