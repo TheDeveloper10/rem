@@ -4,7 +4,7 @@ type IRoute interface {
 	Match(url string) bool
 	handle(response IResponse, request IRequest)
 
-	extractURLParameters(url string) *map[string]string
+	extractURLParameters(url string) *KeyValue
 
 	GetRoute(handlers ...Handler) IRoute
 	PostRoute(handlers ...Handler) IRoute

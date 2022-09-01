@@ -113,8 +113,8 @@ func (br *BasicRoute) Match(targetURL string) bool {
 	return false
 }
 
-func (br *BasicRoute) extractURLParameters(targetURL string) *map[string]string {
-	urlParameters := map[string]string{}
+func (br *BasicRoute) extractURLParameters(targetURL string) *KeyValue {
+	urlParameters := KeyValue{}
 
 	originalURL := br.url
 	oLen := len(originalURL)

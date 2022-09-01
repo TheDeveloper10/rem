@@ -9,10 +9,10 @@ import (
 type IRequest interface {
 	GetURL() string
 	GetMethod() string
-	GetHeaders() Headers
+	GetHeaders() KeyValues
 	GetCookies() []*http.Cookie
-	GetURLParameters() map[string]string
-	setURLParameters(*map[string]string)
+	GetURLParameters() KeyValue
+	setURLParameters(*KeyValue)
 	GetQueryParameters() url.Values
 	GetBody() io.ReadCloser
 }
@@ -29,12 +29,12 @@ func NewBasicRequest(req *http.Request) IRequest {
 	}
 	
 	return &BasicRequest{
-		URL: cleanPath(req.URL.EscapedPath()),
-		Method: req.Method,
-		Headers: Headers(req.Header),
-		Cookies: req.Cookies(),
-		URLParameters: urlParameters,
+		URL:             cleanPath(req.URL.EscapedPath()),
+		Method:          req.Method,
+		Headers:         KeyValues(req.Header),
+		Cookies:         req.Cookies(),
+		URLParameters:   urlParameters,
 		QueryParameters: req.URL.Query(),
-		Body: req.Body,
+		Body:            req.Body,
 	}
 }

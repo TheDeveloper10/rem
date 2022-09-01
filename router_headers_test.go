@@ -8,7 +8,7 @@ import (
 func TestRouterHeaders(t *testing.T) {
 	router := createRouter4()
 
-	tests := []expectedHeadersRouterTest{
+	tests := []headersRouterTest{
 		{ "/headers-test-1", http.MethodGet, http.StatusMethodNotAllowed, nil },
 		{ "/headers-test-1/", http.MethodPost, http.StatusOK, map[string]string { "Content-Type": "application/json" } },
 		{ "/headers-test-1/17j/", http.MethodPost, http.StatusCreated, map[string]string { "Content-Type": "application/json", "Content-Encoding": "gzip" } },
@@ -16,7 +16,7 @@ func TestRouterHeaders(t *testing.T) {
 		{ "/headers-test-1/f", http.MethodPost, http.StatusForbidden, map[string]string{} },
 	}
 
-	runExpectedHeadersRouterTests(t, &tests, router)
+	runHeadersRouterTest(t, &tests, router)
 }
 
 func createRouter4() *Router {
@@ -27,15 +27,15 @@ func createRouter4() *Router {
 		PostRoute(func(res IResponse, req IRequest) bool {
 			res.
 				Status(http.StatusOK).
-				JSON(dummyTestData{ val: 17, str: "testing" })
+				JSON(dummyTestData{ Val: 17, Str: "testing" })
 			return true
 		})
 
 	router.
 		NewRoute("/headers-test-1/:userId/").
 		PostRoute(func(res IResponse, req IRequest) bool {
-			userId, ok := req.GetURLParameters()["userId"]
-			if !ok {
+			userId, status := req.GetURLParameters().Get("userId")
+			if !status {
 				res.Status(http.StatusBadRequest)
 				return true
 			}
@@ -44,7 +44,7 @@ func createRouter4() *Router {
 				res.
 					Status(http.StatusCreated).
 					Header("Content-Encoding", "gzip").
-					JSON(dummyTestData{str: "123", val: 12})
+					JSON(dummyTestData{Str: "123", Val: 12})
 			} else if userId == "z" {
 				res.
 					Header("Access-Control-Allow-Origin", "*").
@@ -62,6 +62,6 @@ func createRouter4() *Router {
 }
 
 type dummyTestData struct {
-	val int
-	str string
+	Val int    `json:"val"`
+	Str string `json:"str"`
 }
