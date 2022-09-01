@@ -3,7 +3,6 @@ package rem
 import (
 	"io"
 	"net/http"
-	"net/url"
 )
 
 type BasicRequest struct {
@@ -12,7 +11,7 @@ type BasicRequest struct {
 	Headers KeyValues
 	Cookies []*http.Cookie
 	URLParameters KeyValue
-	QueryParameters url.Values
+	QueryParameters KeyValues
 	Body io.ReadCloser
 }
 
@@ -22,5 +21,5 @@ func (br *BasicRequest) GetHeaders() KeyValues { return br.Headers }
 func (br *BasicRequest) GetCookies() []*http.Cookie { return br.Cookies }
 func (br *BasicRequest) GetURLParameters() KeyValue { return br.URLParameters }
 func (br *BasicRequest) setURLParameters(params *KeyValue) { br.URLParameters = *params }
-func (br *BasicRequest) GetQueryParameters() url.Values { return br.QueryParameters }
+func (br *BasicRequest) GetQueryParameters() KeyValues { return br.QueryParameters }
 func (br *BasicRequest) GetBody() io.ReadCloser { return br.Body }

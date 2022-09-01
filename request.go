@@ -3,7 +3,6 @@ package rem
 import (
 	"io"
 	"net/http"
-	"net/url"
 )
 
 type IRequest interface {
@@ -13,7 +12,7 @@ type IRequest interface {
 	GetCookies() []*http.Cookie
 	GetURLParameters() KeyValue
 	setURLParameters(*KeyValue)
-	GetQueryParameters() url.Values
+	GetQueryParameters() KeyValues
 	GetBody() io.ReadCloser
 }
 
@@ -34,7 +33,7 @@ func NewBasicRequest(req *http.Request) IRequest {
 		Headers:         KeyValues(req.Header),
 		Cookies:         req.Cookies(),
 		URLParameters:   urlParameters,
-		QueryParameters: req.URL.Query(),
+		QueryParameters: KeyValues(req.URL.Query()),
 		Body:            req.Body,
 	}
 }

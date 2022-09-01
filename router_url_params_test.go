@@ -62,8 +62,8 @@ func createRouter3() *Router {
 	router.
 		NewRoute("/url-test-1/:testId").
 		GetRoute(func(res IResponse, req IRequest) bool {
-			testId, ok := req.GetURLParameters()["testId"]
-			if !ok {
+			testId, status := req.GetURLParameters().Get("testId")
+			if !status {
 				res.Status(http.StatusBadRequest)
 				return true
 			}
@@ -82,13 +82,13 @@ func createRouter3() *Router {
 	router.
 		NewRoute("/url-test-2/:a/:g/").
 		PostRoute(func(res IResponse, req IRequest) bool {
-			a, ok := req.GetURLParameters()["a"]
-			if !ok {
+			a, statusA := req.GetURLParameters().Get("a")
+			if !statusA {
 				res.Status(http.StatusBadRequest)
 				return true
 			}
-			g, ok := req.GetURLParameters()["g"]
-			if !ok {
+			g, statusG := req.GetURLParameters().Get("g")
+			if !statusG {
 				res.Status(http.StatusBadRequest)
 				return true
 			}

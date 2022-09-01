@@ -30,9 +30,9 @@ func createRouter2() *Router {
 	router.
 		NewRoute("/query-single-int-param-test").
 		GetRoute(func(res IResponse, req IRequest) bool {
-			v := req.GetQueryParameters().Get("v")
+			v, status := req.GetQueryParameters().Get("v")
 
-			if v == "" {
+			if v == "" || !status {
 				res.Status(http.StatusBadRequest)
 			} else if v == "1" {
 				res.Status(http.StatusOK)
@@ -48,14 +48,14 @@ func createRouter2() *Router {
 	router.
 		NewRoute("/query-multi-int-param-test").
 		PostRoute(func(res IResponse, req IRequest) bool {
-			v1 := req.GetQueryParameters().Get("v1")
-			v2 := req.GetQueryParameters().Get("v2")
+			v1, status1 := req.GetQueryParameters().Get("v1")
+			v2, status2 := req.GetQueryParameters().Get("v2")
 
 			if v1 == "15" && v2 == "35" {
 				res.Status(http.StatusOK)
-			} else if v1 == "88" && v2 == "" {
+			} else if v1 == "88" && (v2 == "" || !status2) {
 				res.Status(http.StatusCreated)
-			} else if v1 == "" && v2 == "44" {
+			} else if (v1 == "" || status1) && v2 == "44" {
 				res.Status(http.StatusAccepted)
 			} else {
 				res.Status(http.StatusBadRequest)
