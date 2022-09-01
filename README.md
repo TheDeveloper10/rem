@@ -23,7 +23,7 @@ ___
 With a [correctly configured](https://golang.org/doc/install#testing) Go toolchain:
 
 ```sh
-go get -u github.com/TheDeveloper10/rem
+go get -u github.com/TheDeveloper10/rem@v1.1.1
 ```
 
 ## Examples
