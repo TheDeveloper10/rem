@@ -11,4 +11,5 @@ type IRoute interface {
 	Patch(handlers ...Handler) IRoute
 	Put(handlers ...Handler) IRoute
 	Delete(handlers ...Handler) IRoute
+	MultiMethod(methods []string, handlers ...Handler) IRoute
 }

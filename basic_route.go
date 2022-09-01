@@ -156,3 +156,9 @@ func (br *BasicRoute) Post(handlers ...Handler)   IRoute { return br.setHandlers
 func (br *BasicRoute) Patch(handlers ...Handler)  IRoute { return br.setHandlers(http.MethodPatch,  handlers) }
 func (br *BasicRoute) Put(handlers ...Handler)    IRoute { return br.setHandlers(http.MethodPut,    handlers) }
 func (br *BasicRoute) Delete(handlers ...Handler) IRoute { return br.setHandlers(http.MethodDelete, handlers) }
+func (br *BasicRoute) MultiMethod(methods []string, handlers ...Handler) IRoute {
+	for _, method := range methods {
+		br.setHandlers(method, handlers)
+	}
+	return br
+}

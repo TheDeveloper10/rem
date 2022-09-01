@@ -28,6 +28,18 @@ func TestRouterBody(t *testing.T) {
 			http.StatusForbidden,
 			"{\"uid\":\"abcdb\",\"test2\":[\"123\",\"abcdc\",\"hello\"]}",
 		},
+		{
+			"body-test-1/abcd",
+			http.MethodPost,
+			http.StatusForbidden,
+			"{\"uid\":\"abcdb\",\"test2\":[\"123\",\"abcdc\",\"hello\"]}",
+		},
+		{
+			"body-test-1/abcd",
+			http.MethodPut,
+			http.StatusMethodNotAllowed,
+			"",
+		},
 	}
 
 	runBodyRouterTests(t, &tests, router)
@@ -38,7 +50,7 @@ func createRouter5() *Router {
 
 	router.
 		NewRoute("/body-test-1/:userId").
-		Delete(func(res IResponse, req IRequest) bool {
+		MultiMethod([]string{http.MethodDelete, http.MethodPost}, func(res IResponse, req IRequest) bool {
 			userId := req.GetURLParameters().Get("userId")
 			if userId == "" {
 				res.Status(http.StatusBadRequest)
