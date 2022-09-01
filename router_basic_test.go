@@ -23,11 +23,11 @@ func createRouter1() *Router {
 
 	router.
 		NewRoute("/basic-test").
-		GetRoute(func(res IResponse, req IRequest) bool {
+		Get(func(res IResponse, req IRequest) bool {
 			res.Status(http.StatusOK)
 			return true
 		}).
-		PostRoute(func(res IResponse, req IRequest) bool {
+		Post(func(res IResponse, req IRequest) bool {
 			res.Status(http.StatusCreated)
 			return true
 		})

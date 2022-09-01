@@ -38,9 +38,9 @@ func createRouter5() *Router {
 
 	router.
 		NewRoute("/body-test-1/:userId").
-		DeleteRoute(func(res IResponse, req IRequest) bool {
-			userId, status := req.GetURLParameters().Get("userId")
-			if !status {
+		Delete(func(res IResponse, req IRequest) bool {
+			userId := req.GetURLParameters().Get("userId")
+			if userId == "" {
 				res.Status(http.StatusBadRequest)
 				return true
 			}

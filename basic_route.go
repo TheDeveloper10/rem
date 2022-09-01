@@ -151,8 +151,8 @@ func (br *BasicRoute) extractURLParameters(targetURL string) *KeyValue {
 	return &urlParameters
 }
 
-func (br *BasicRoute) GetRoute(handlers ...Handler)    IRoute { return br.setHandlers(http.MethodGet,    handlers) }
-func (br *BasicRoute) PostRoute(handlers ...Handler)   IRoute { return br.setHandlers(http.MethodPost,   handlers) }
-func (br *BasicRoute) PatchRoute(handlers ...Handler)  IRoute { return br.setHandlers(http.MethodPatch,  handlers) }
-func (br *BasicRoute) PutRoute(handlers ...Handler)    IRoute { return br.setHandlers(http.MethodPut,    handlers) }
-func (br *BasicRoute) DeleteRoute(handlers ...Handler) IRoute { return br.setHandlers(http.MethodDelete, handlers) }
+func (br *BasicRoute) Get(handlers ...Handler)    IRoute { return br.setHandlers(http.MethodGet,    handlers) }
+func (br *BasicRoute) Post(handlers ...Handler)   IRoute { return br.setHandlers(http.MethodPost,   handlers) }
+func (br *BasicRoute) Patch(handlers ...Handler)  IRoute { return br.setHandlers(http.MethodPatch,  handlers) }
+func (br *BasicRoute) Put(handlers ...Handler)    IRoute { return br.setHandlers(http.MethodPut,    handlers) }
+func (br *BasicRoute) Delete(handlers ...Handler) IRoute { return br.setHandlers(http.MethodDelete, handlers) }

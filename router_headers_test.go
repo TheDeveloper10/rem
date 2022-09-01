@@ -24,7 +24,7 @@ func createRouter4() *Router {
 
 	router.
 		NewRoute("/headers-test-1").
-		PostRoute(func(res IResponse, req IRequest) bool {
+		Post(func(res IResponse, req IRequest) bool {
 			res.
 				Status(http.StatusOK).
 				JSON(dummyTestData{ Val: 17, Str: "testing" })
@@ -33,9 +33,9 @@ func createRouter4() *Router {
 
 	router.
 		NewRoute("/headers-test-1/:userId/").
-		PostRoute(func(res IResponse, req IRequest) bool {
-			userId, status := req.GetURLParameters().Get("userId")
-			if !status {
+		Post(func(res IResponse, req IRequest) bool {
+			userId := req.GetURLParameters().Get("userId")
+			if userId == "" {
 				res.Status(http.StatusBadRequest)
 				return true
 			}

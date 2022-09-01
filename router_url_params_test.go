@@ -61,9 +61,9 @@ func createRouter3() *Router {
 
 	router.
 		NewRoute("/url-test-1/:testId").
-		GetRoute(func(res IResponse, req IRequest) bool {
-			testId, status := req.GetURLParameters().Get("testId")
-			if !status {
+		Get(func(res IResponse, req IRequest) bool {
+			testId := req.GetURLParameters().Get("testId")
+			if testId == "" {
 				res.Status(http.StatusBadRequest)
 				return true
 			}
@@ -81,23 +81,19 @@ func createRouter3() *Router {
 
 	router.
 		NewRoute("/url-test-2/:a/:g/").
-		PostRoute(func(res IResponse, req IRequest) bool {
-			a, statusA := req.GetURLParameters().Get("a")
-			if !statusA {
+		Post(func(res IResponse, req IRequest) bool {
+			a := req.GetURLParameters().Get("a")
+			if a == "" {
 				res.Status(http.StatusBadRequest)
 				return true
 			}
-			g, statusG := req.GetURLParameters().Get("g")
-			if !statusG {
+			g := req.GetURLParameters().Get("g")
+			if g == "" {
 				res.Status(http.StatusBadRequest)
 				return true
 			}
 
-			if a == "" {
-				res.Status(http.StatusUnauthorized)
-			} else if g == "" {
-				res.Status(http.StatusForbidden)
-			} else if a == "qwe" && g == "ewq" {
+			if a == "qwe" && g == "ewq" {
 				res.Status(http.StatusOK)
 			} else if a == "1" && g == "2" {
 				res.Status(http.StatusAccepted)
@@ -110,7 +106,7 @@ func createRouter3() *Router {
 
 	router.
 		NewRoute("/url-test-3/:userId/data/").
-		DeleteRoute(func(res IResponse, req IRequest) bool {
+		Delete(func(res IResponse, req IRequest) bool {
 			userId, ok := req.GetURLParameters()["userId"]
 			if !ok {
 				res.Status(http.StatusBadRequest)

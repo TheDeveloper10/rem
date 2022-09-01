@@ -6,9 +6,9 @@ type IRoute interface {
 
 	extractURLParameters(url string) *KeyValue
 
-	GetRoute(handlers ...Handler) IRoute
-	PostRoute(handlers ...Handler) IRoute
-	PatchRoute(handlers ...Handler) IRoute
-	PutRoute(handlers ...Handler) IRoute
-	DeleteRoute(handlers ...Handler) IRoute
+	Get(handlers ...Handler) IRoute
+	Post(handlers ...Handler) IRoute
+	Patch(handlers ...Handler) IRoute
+	Put(handlers ...Handler) IRoute
+	Delete(handlers ...Handler) IRoute
 }

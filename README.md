@@ -29,8 +29,8 @@ go get -u github.com/TheDeveloper10/rem
 ## Examples
 This is a very simple example that describes the entire package really well.
 First we create a new `rem.Router` and then we use it to create new routes.
-The process of creating routes is really easy: we just use the GetRoute for
-handling `GET` HTTP method, PostRoute for handling `POST` HTTP method, etc. 
+The process of creating routes is really easy: we just use the Get for
+handling `GET` HTTP method, Post for handling `POST` HTTP method, etc. 
 for the rest of the methods and then we assign the handlers that we want the 
 data to go through. 
 
@@ -47,16 +47,16 @@ func main() {
 	// Add a new route
 	router.
 		NewRoute("/products").
-		GetRoute(AuthMiddleware, GetProductsHandle).
-		PostRoute(AuthMiddleware, CreateProductsHandle)
+		Get(AuthMiddleware, GetProductsHandle).
+		Post(AuthMiddleware, CreateProductsHandle)
 	    
 	
 	// Add a new route
 	router.
 		NewRoute("/products/:productId").
-		GetRoute(AuthMiddleware, GetProductHandle).
-		PutRoute(AuthMiddleware, ReplaceProductHandle).
-		DeleteRoute(AuthMiddleware, DeleteProductHandle)
+		Get(AuthMiddleware, GetProductHandle).
+		Put(AuthMiddleware, ReplaceProductHandle).
+		Delete(AuthMiddleware, DeleteProductHandle)
 	
 	// Start the HTTP server
 	http.ListenAndServe(":80", router)
@@ -74,7 +74,7 @@ func main() {
 	
 	router.
 		NewRoute("/users").
-		PostRoute(func(response rem.IResponse, request rem.IRequest) bool {
+		Post(func(response rem.IResponse, request rem.IRequest) bool {
 			request.
 				Status(http.StatusCreated).
 				JSON(useResponse{
@@ -175,7 +175,7 @@ func main() {
 	
 	router.
 		NewRoute("/products/:productId").
-		GetRoute(GetProductHandler)
+		Get(GetProductHandler)
 	
 	http.ListenAndServe(":80", router)
 }
