@@ -8,20 +8,20 @@ import (
 func TestRouterQueryParams(t *testing.T) {
 	router := createRouter2()
 
-	tests := []routerTest{
-		{ "/query-single-int-param-test", http.MethodGet, nil, http.StatusBadRequest },
-		{ "/query-single-int-param-test?v", http.MethodGet, nil, http.StatusBadRequest },
-		{ "/query-single-int-param-test?v=", http.MethodGet, nil, http.StatusBadRequest },
-		{ "/query-single-int-param-test?v=1", http.MethodGet, nil, http.StatusOK },
-		{ "/query-single-int-param-test?v=2", http.MethodGet, nil, http.StatusAccepted },
-		{ "/query-single-int-param-test?v=3", http.MethodGet, nil, http.StatusForbidden },
-		{ "/query-multi-int-param-test", http.MethodPost, nil, http.StatusBadRequest },
-		{ "/query-multi-int-param-test?v1=88", http.MethodPost, nil, http.StatusCreated },
-		{ "/query-multi-int-param-test?v2=44", http.MethodPost, nil, http.StatusAccepted },
-		{ "/query-multi-int-param-test?v1=15&v2=35", http.MethodPost, nil, http.StatusOK },
+	tests := []noBodyRouterTest{
+		{ "/query-single-int-param-test", http.MethodGet, http.StatusBadRequest },
+		{ "/query-single-int-param-test?v", http.MethodGet, http.StatusBadRequest },
+		{ "/query-single-int-param-test?v=", http.MethodGet, http.StatusBadRequest },
+		{ "/query-single-int-param-test?v=1", http.MethodGet, http.StatusOK },
+		{ "/query-single-int-param-test?v=2", http.MethodGet, http.StatusAccepted },
+		{ "/query-single-int-param-test?v=3", http.MethodGet, http.StatusForbidden },
+		{ "/query-multi-int-param-test", http.MethodPost, http.StatusBadRequest },
+		{ "/query-multi-int-param-test?v1=88", http.MethodPost, http.StatusCreated },
+		{ "/query-multi-int-param-test?v2=44", http.MethodPost, http.StatusAccepted },
+		{ "/query-multi-int-param-test?v1=15&v2=35", http.MethodPost, http.StatusOK },
 	}
 
-	runTests(t, &tests, router)
+	runNoBodyRouterTests(t, &tests, router)
 }
 
 func createRouter2() *Router {

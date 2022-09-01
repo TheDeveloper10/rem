@@ -9,7 +9,7 @@ import (
 type IRequest interface {
 	GetURL() string
 	GetMethod() string
-	GetHeaders() http.Header
+	GetHeaders() Headers
 	GetCookies() []*http.Cookie
 	GetURLParameters() map[string]string
 	setURLParameters(*map[string]string)
@@ -31,7 +31,7 @@ func NewBasicRequest(req *http.Request) IRequest {
 	return &BasicRequest{
 		URL: cleanPath(req.URL.EscapedPath()),
 		Method: req.Method,
-		Headers: req.Header,
+		Headers: Headers(req.Header),
 		Cookies: req.Cookies(),
 		URLParameters: urlParameters,
 		QueryParameters: req.URL.Query(),

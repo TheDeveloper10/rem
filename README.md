@@ -48,7 +48,7 @@ func main() {
 	router.
 		NewRoute("/products").
 		GetRoute(AuthMiddleware, GetProductsHandle).
-	    PostRoute(AuthMiddleware, CreateProductsHandle)
+		PostRoute(AuthMiddleware, CreateProductsHandle)
 	    
 	
 	// Add a new route
@@ -76,13 +76,13 @@ func main() {
 		NewRoute("/users").
 		PostRoute(func(response IResponse, request IRequest) bool {
 			response := userResponse{ id: "jxIZp17" }
-		    request.Status(http.StatusCreated).JSON(response)
-
+			request.Status(http.StatusCreated).JSON(response)
+        
 			// In case of a single handler it doesn't matter what you 
 			// return (true or false). It only matters when there's more 
 			// than one handler because that's how the route decides to 
 			// continue passing to the next handler.
 			return true
-        })
+		})
 }
 ```
