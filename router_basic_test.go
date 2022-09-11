@@ -13,6 +13,9 @@ func TestRouterBasic(t *testing.T) {
 		{ "/basic-test", http.MethodPost, http.StatusCreated },
 		{ "/basic-test", http.MethodDelete, http.StatusMethodNotAllowed },
 		{ "/unknown-path", http.MethodPatch, http.StatusNotFound },
+		{ "/basic-test/1", http.MethodGet, http.StatusNotFound },
+		{ "/basic-test/2", http.MethodPost, http.StatusNotFound },
+		{ "/basic-test/3", http.MethodDelete, http.StatusNotFound },
 	}
 
 	runNoBodyRouterTests(t, &tests, router)
