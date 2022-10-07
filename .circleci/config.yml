@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  "test":
+    parameters:
+      version:
+        type: string
+        default: "latest"
+    docker:
+      - image: "circleci/golang:<< parameters.version >>"
+    working_directory: /go/src/github.com/TheDeveloper10/rem
+    steps:
+      - checkout
+      - run:
+          name: "Fetch dependencies"
+          command: go get -v ./...
+      - run:
+          name: "Run go vet"
+          command: go vet -v ./...
+      - run:
+          name: "Run go test (+ race detector)"
+          command: go test -v -race ./...
