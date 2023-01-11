@@ -8,7 +8,7 @@ engineering this package is a rest from swiss knife packages that solve all of y
 and create a thousand more.
 
 The main features are:
-* It implements the `http.Handler` interface so it is compatible with `net/http`
+* It implements the `http.Handler` interface so it is compatible with `net/http` *(this allows for use of other packages such as `github.com/rs/cors`)*
 * Requests can be matched based on URL paths and HTTP Methods
 * URL paths can have optional variables
 
