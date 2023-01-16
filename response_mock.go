@@ -63,7 +63,3 @@ func (mr *MockResponse) CompareHeaders(other *MockResponse) bool {
 func (mr *MockResponse) CompareBody(other *MockResponse) bool {
 	return bytes.Equal(mr.Body, other.Body)
 }
-
-func (mr *MockResponse) Compare(other *MockResponse) bool {
-	return mr.CompareStatus(other) && mr.CompareHeaders(other) && mr.CompareBody(other)
-}
