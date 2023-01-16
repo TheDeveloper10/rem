@@ -3,6 +3,7 @@ package rem
 import (
 	"bytes"
 	"encoding/json"
+	"reflect"
 )
 
 type MockResponse struct {
@@ -51,7 +52,7 @@ func (mr *MockResponse) CompareHeaders(other *MockResponse) bool {
 	}
 
 	for k, av := range mr.Headers {
-		if bv, ok := other.Headers[k]; !ok || len(av) != len(bv) || av[0] != bv[0] {
+		if bv, ok := other.Headers[k]; !ok || !reflect.DeepEqual(av, bv) {
 			return false
 		}
 	}

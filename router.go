@@ -27,7 +27,7 @@ func (r *Router) NewRoute(url string) IRoute {
 
 // Handle HTTP requests
 func (r *Router) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	response := NewHTTPResponseWriter(res)
+	response := WrapHTTPResponseWriter(res)
 	request := NewBasicRequest(req)
 
 	targetURL := request.GetURL()

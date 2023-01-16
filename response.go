@@ -16,10 +16,18 @@ type IResponse interface {
 // Response Factories
 // -----------------------------------------
 
-func NewHTTPResponseWriter(rw http.ResponseWriter) *HTTPResponseWriterWrapper {
+func WrapHTTPResponseWriter(rw http.ResponseWriter) *HTTPResponseWriterWrapper {
 	return &HTTPResponseWriterWrapper{
 		rw: 		rw,
 		statusCode: http.StatusInternalServerError,
 		body: 	 	nil,
+	}
+}
+
+func NewMockResponse() *MockResponse {
+	return &MockResponse{
+		StatusCode: 0,
+		Headers: map[string][]string{},
+		Body: []byte{},
 	}
 }
