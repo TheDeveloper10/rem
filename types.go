@@ -12,6 +12,11 @@ func (kv KeyValues) Get(key string) string {
 	return ""
 }
 
+func (kv KeyValues) set(key string, value []string) bool {
+	kv[key] = value
+	return true
+}
+
 
 
 type KeyValue map[string]string
@@ -22,4 +27,9 @@ func (kv KeyValue) Get(key string) string {
 		return val
 	}
 	return ""
+}
+
+func (kv KeyValue) set(key string, value string) bool {
+	kv[key] = value
+	return true
 }
