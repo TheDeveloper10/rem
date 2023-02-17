@@ -63,6 +63,11 @@ func createRouter3() *Router {
 		NewRoute("/url-test-1/:testId").
 		Get(func(res IResponse, req IRequest) bool {
 			testId := req.GetURLParameters().Get("testId")
+			testId2 := req.GetURLParameters().Get("testId2")
+			if testId2 != "" {
+				res.Status(http.StatusBadRequest)
+				return false
+			}
 			if testId == "" {
 				res.Status(http.StatusBadRequest)
 				return true

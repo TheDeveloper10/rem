@@ -11,7 +11,10 @@ func TestRouterBasic(t *testing.T) {
 	tests := []noBodyRouterTest{
 		{ "/basic-test", http.MethodGet, http.StatusOK },
 		{ "/basic-test", http.MethodPost, http.StatusCreated },
+		{ "/basic-test", http.MethodPut, http.StatusOK },
+		{ "/basic-test", http.MethodPatch, http.StatusOK },
 		{ "/basic-test", http.MethodDelete, http.StatusMethodNotAllowed },
+
 		{ "/unknown-path", http.MethodPatch, http.StatusNotFound },
 		{ "/basic-test/1", http.MethodGet, http.StatusNotFound },
 		{ "/basic-test/2", http.MethodPost, http.StatusNotFound },
@@ -25,6 +28,9 @@ func createRouter1() *Router {
 	router := NewRouter()
 
 	router.
+		NewRoute("/%ь")
+
+	router.
 		NewRoute("/basic-test").
 		Get(func(res IResponse, req IRequest) bool {
 			res.Status(http.StatusOK)
@@ -33,6 +39,14 @@ func createRouter1() *Router {
 		Post(func(res IResponse, req IRequest) bool {
 			res.Status(http.StatusCreated)
 			return true
+		}).
+		Put(func(res IResponse, req IRequest) bool {
+			res.Status(http.StatusOK)
+			return true
+		}).
+		Patch(func(res IResponse, req IRequest) bool {
+			res.Status(http.StatusOK)
+			return false
 		})
 
 	return router

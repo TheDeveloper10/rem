@@ -28,8 +28,3 @@ func (kv KeyValue) Get(key string) string {
 	}
 	return ""
 }
-
-func (kv KeyValue) set(key string, value string) bool {
-	kv[key] = value
-	return true
-}

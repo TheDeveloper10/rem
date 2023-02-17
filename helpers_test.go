@@ -9,6 +9,7 @@ type cleanPathTest struct {
 
 func TestCleanPath(t *testing.T) {
 	tests := []cleanPathTest{
+		{ "", "/" },
 		{ "test", "/test/" },
 		{ "test/", "/test/" },
 		{ "test//", "/test/" },

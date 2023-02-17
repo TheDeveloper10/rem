@@ -87,7 +87,7 @@ func (br *BasicRoute) Match(targetURL string) bool {
 
 	oIndx := 0
 	tIndx := 0
-	for true {
+	for {
 		if originalURL[oIndx] == ':' {
 			tIndx = br.skipToNextIndent(&targetURL, tLen, tIndx)
 			oIndx = br.skipToNextIndent(&originalURL, oLen, oIndx)
@@ -109,8 +109,6 @@ func (br *BasicRoute) Match(targetURL string) bool {
 			return false
 		}
 	}
-
-	return false
 }
 
 func (br *BasicRoute) extractURLParameters(targetURL string) *KeyValue {
@@ -122,7 +120,7 @@ func (br *BasicRoute) extractURLParameters(targetURL string) *KeyValue {
 
 	oIndx := 0
 	tIndx := 0
-	for true {
+	for {
 		if originalURL[oIndx] == ':' {
 			variable := br.extractToNextIndent(&targetURL, tLen, tIndx)
 			name     := br.extractToNextIndent(&originalURL, oLen, oIndx + 1)
