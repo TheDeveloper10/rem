@@ -14,6 +14,7 @@ type IRequest interface {
 	setURLParameters(*KeyValue)
 	GetQueryParameters() KeyValues
 	GetBody() io.ReadCloser
+	GetRequest() *http.Request
 }
 
 // -----------------------------------------
@@ -26,14 +27,18 @@ func NewBasicRequest(req *http.Request) IRequest {
 	if urlParametersMaster != nil {
 		urlParameters = urlParametersMaster.(map[string]string)
 	}
-	
+
 	return &BasicRequest{
-		URL:             cleanPath(req.URL.EscapedPath()),
-		Method:          req.Method,
-		Headers:         KeyValues(req.Header),
-		Cookies:         req.Cookies(),
+		URL:    cleanPath(req.URL.EscapedPath()),
+		Method: req.Method,
+
+		Headers: KeyValues(req.Header),
+		Cookies: req.Cookies(),
+
 		URLParameters:   urlParameters,
 		QueryParameters: KeyValues(req.URL.Query()),
 		Body:            req.Body,
+
+		Request: req,
 	}
 }
