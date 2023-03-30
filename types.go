@@ -1,30 +1,22 @@
 package rem
 
-type KeyValues map[string][]string
+import "io"
 
-func (kv KeyValues) Get(key string) string {
-	vals, ok := kv[key]
-	if ok {
-		if len(vals) > 0 {
-			return vals[0]
-		}
-	}
-	return ""
+type Request interface {
+	Body() io.Reader
+	Headers() // TODO
+	Cookies() // TODO
+	IP()      // TODO
 }
 
-func (kv KeyValues) set(key string, value []string) bool {
-	kv[key] = value
-	return true
+type Response interface {
+	Status(status int) Response
+	Body(body any) Response
 }
 
-
-
-type KeyValue map[string]string
-
-func (kv KeyValue) Get(key string) string {
-	val, ok := kv[key]
-	if ok {
-		return val
-	}
-	return ""
+type BodyProcessor interface {
+	Serialize(body any) ([]byte, error)
+	Parse(body io.Reader, out any) error
 }
+
+type Handler func(ctx *Context) Response

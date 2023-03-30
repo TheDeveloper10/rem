@@ -1,33 +1,16 @@
 package rem
 
-import (
-	"net/http"
-)
-
-type IResponse interface {
-	Status(statusCode int) IResponse
-	Header(key string, value string) IResponse
-	Bytes(data []byte) IResponse
-	Text(text string) IResponse
-	JSON(data interface{}) IResponse
+type response struct {
+	status int
+	body   any
 }
 
-// -----------------------------------------
-// Response Factories
-// -----------------------------------------
-
-func WrapHTTPResponseWriter(rw http.ResponseWriter) *HTTPResponseWriterWrapper {
-	return &HTTPResponseWriterWrapper{
-		rw: 		rw,
-		statusCode: http.StatusInternalServerError,
-		body: 	 	nil,
-	}
+func (r *response) Status(status int) Response {
+	r.status = status
+	return r
 }
 
-func NewMockResponse() *MockResponse {
-	return &MockResponse{
-		StatusCode: 0,
-		Headers: map[string][]string{},
-		Body: []byte{},
-	}
+func (r *response) Body(body any) Response {
+	r.body = body
+	return r
 }
