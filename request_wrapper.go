@@ -21,10 +21,6 @@ func (rw *requestWrapper) BodyBytes() ([]byte, error) {
 	return io.ReadAll(rw.req.Body)
 }
 
-func (rw *requestWrapper) BodyParsed(out any) error {
-	return config.BodyProcessor.Parse(rw.req.Body, &out)
-}
-
 func (rw *requestWrapper) GetCookie(name string) (*http.Cookie, error) {
 	return rw.req.Cookie(name)
 }

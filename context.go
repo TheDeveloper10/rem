@@ -44,3 +44,7 @@ func (ctx *Context) Next() IResponse {
 		return ctx.handlers[ctx.currentHandler](ctx)
 	}
 }
+
+func (ctx *Context) Body(out any) IResponse {
+	return ParseRequest(ctx.request, out)
+}

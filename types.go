@@ -8,7 +8,6 @@ import (
 type IRequest interface {
 	Body() io.Reader
 	BodyBytes() ([]byte, error)
-	BodyParsed(out any) error
 
 	// TODO: add TLS
 	// TODO: add Forms
@@ -31,13 +30,9 @@ type IResponse interface {
 	GetWrittenHeaders() map[string]string
 }
 
-type IBodyProcessor interface {
-	Serialize(body any) ([]byte, error)
-	SerializeResponse(response IResponse) ([]byte, error)
-	Parse(body io.Reader, out any) error
-}
-
 type Handler func(ctx *Context) IResponse
+type ErrorHandlerEmpty func() IResponse
+type ErrorHandler func(err error) IResponse
 
 type IRoute interface {
 	Match(url string) bool
