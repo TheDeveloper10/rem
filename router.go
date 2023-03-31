@@ -21,19 +21,26 @@ func (r *Router) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		// write status
 		rw.WriteHeader(response.GetWrittenStatus())
 
-		// if the response has a body
-		if rBody := response.GetWrittenBody(); rBody != nil {
-			// serialize the body
-			data, err := Serialize(response.GetWrittenBody())
-			if err != nil {
-				panic(err)
-			}
+		// set headers (if any exist)
+		for header, value := range response.GetWrittenHeaders() {
+			rw.Header().Set(header, value)
+		}
 
-			// write it to ResponseWriter
-			_, err = rw.Write(data)
-			if err != nil {
-				panic(err)
-			}
+		// if the response doesn't have a body
+		if rBody := response.GetWrittenBody(); rBody == nil {
+			return
+		}
+
+		// serialize the body
+		data, err := config.BodyProcessor.SerializeResponse(response)
+		if err != nil {
+			panic(err)
+		}
+
+		// write it to ResponseWriter
+		_, err = rw.Write(data)
+		if err != nil {
+			panic(err)
 		}
 
 		return

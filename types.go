@@ -1,29 +1,39 @@
 package rem
 
-import "io"
+import (
+	"io"
+	"net/http"
+)
 
 type IRequest interface {
 	Body() io.Reader
-	Headers() // TODO
-	Cookies() // TODO
-	IP()      // TODO
+	BodyBytes() ([]byte, error)
+	BodyParsed(out any) error
+
+	// TODO: add TLS
+	// TODO: add Forms
+	// TODO: add url variables
+	// TODO: add query variables
+	Headers() http.Header
+	Cookies() []*http.Cookie
+	RemoteAddress() string
+	URL() string
+	Method() string
 }
 
 type IResponse interface {
 	Status(status int) IResponse
 	Body(body any) IResponse
+	Header(key, value string) IResponse
 
 	GetWrittenStatus() int
 	GetWrittenBody() any
-}
-
-type WrittenData struct {
-	Status int
-	Body   any
+	GetWrittenHeaders() map[string]string
 }
 
 type IBodyProcessor interface {
 	Serialize(body any) ([]byte, error)
+	SerializeResponse(response IResponse) ([]byte, error)
 	Parse(body io.Reader, out any) error
 }
 
