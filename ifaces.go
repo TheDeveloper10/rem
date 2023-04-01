@@ -3,6 +3,7 @@ package rem
 import (
 	"io"
 	"net/http"
+	"net/url"
 )
 
 type IRequest interface {
@@ -16,8 +17,11 @@ type IRequest interface {
 	Headers() http.Header
 	Cookies() []*http.Cookie
 	RemoteAddress() string
+	Query() url.Values
 	URL() string
 	Method() string
+
+	OriginalRequest() *http.Request
 }
 
 type IResponse interface {
@@ -30,18 +34,21 @@ type IResponse interface {
 	GetWrittenHeaders() map[string]string
 }
 
-type Handler func(ctx *Context) IResponse
-type ErrorHandlerEmpty func() IResponse
-type ErrorHandler func(err error) IResponse
-
 type IRoute interface {
-	Match(url string) bool
-	GetHandlers() []Handler
+	Match(targetURL string) bool
+	ExtractURLParameters(targetURL string) (map[string]string, bool)
+	Handlers(method string) []Handler
+	SetHandlers(method string, handlers []Handler) IRoute
+	URL() string
 
 	Get(handlers ...Handler) IRoute
+	Head(handlers ...Handler) IRoute
 	Post(handlers ...Handler) IRoute
-	Patch(handlers ...Handler) IRoute
 	Put(handlers ...Handler) IRoute
 	Delete(handlers ...Handler) IRoute
+	Connect(handlers ...Handler) IRoute
+	Options(handlers ...Handler) IRoute
+	Trace(handlers ...Handler) IRoute
+	Patch(handlers ...Handler) IRoute
 	MultiMethod(methods []string, handlers ...Handler) IRoute
 }
