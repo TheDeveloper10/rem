@@ -3,7 +3,6 @@ package rem
 import (
 	"io"
 	"net/http"
-	"net/url"
 )
 
 type IRequest interface {
@@ -17,7 +16,8 @@ type IRequest interface {
 	Headers() http.Header
 	Cookies() []*http.Cookie
 	RemoteAddress() string
-	Query() url.Values
+	QueryVars() MapStringsReadOnly
+	URLVars() MapStringReadOnly
 	URL() string
 	Method() string
 

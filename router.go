@@ -1,6 +1,8 @@
 package rem
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // Create a new router
 func NewRouter() *Router {
@@ -46,7 +48,7 @@ func (r *Router) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 		request := wrapHTTPRequest(req, paramsURL)
 		ctx := newContext(request, handlers)
-		response := ctx.Next()
+		response := ctx.Next()(ctx)
 
 		// write status
 		rw.WriteHeader(response.GetWrittenStatus())

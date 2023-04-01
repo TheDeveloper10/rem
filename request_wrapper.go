@@ -3,19 +3,23 @@ package rem
 import (
 	"io"
 	"net/http"
-	"net/url"
 )
 
 func wrapHTTPRequest(req *http.Request, urlParams map[string]string) IRequest {
+	var mapped MapStringReadOnly = nil
+	if urlParams != nil {
+		mapped = MapStringReadOnly(urlParams)
+	}
+
 	return &requestWrapper{
 		req:       req,
-		urlParams: urlParams,
+		urlParams: mapped,
 	}
 }
 
 type requestWrapper struct {
 	req       *http.Request
-	urlParams map[string]string
+	urlParams MapStringReadOnly
 }
 
 func (rw *requestWrapper) Body() io.Reader {
@@ -46,8 +50,12 @@ func (rw *requestWrapper) RemoteAddress() string {
 	return rw.req.RemoteAddr
 }
 
-func (rw *requestWrapper) Query() url.Values {
-	return rw.req.URL.Query()
+func (rw *requestWrapper) QueryVars() MapStringsReadOnly {
+	return MapStringsReadOnly(rw.req.URL.Query())
+}
+
+func (rw *requestWrapper) URLVars() MapStringReadOnly {
+	return rw.urlParams
 }
 
 func (rw *requestWrapper) Method() string {

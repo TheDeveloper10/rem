@@ -5,6 +5,7 @@ func newContext(request IRequest, handlers []Handler) *Context {
 		request:        request,
 		data:           nil,
 		handlers:       handlers,
+		handlerCount:   uint8(len(handlers)),
 		currentHandler: 0,
 	}
 }
@@ -14,6 +15,7 @@ type Context struct {
 	data    map[string]any
 
 	handlers       []Handler
+	handlerCount   uint8
 	currentHandler uint8
 }
 
@@ -23,9 +25,10 @@ func (ctx *Context) Request() IRequest {
 
 func (ctx *Context) SetData(key string, value any) {
 	if ctx.data == nil {
-		ctx.data = map[string]any{}
+		ctx.data = map[string]any{key: value}
+	} else {
+		ctx.data[key] = value
 	}
-	ctx.data[key] = value
 }
 
 func (ctx *Context) GetData(key string) any {
@@ -35,14 +38,16 @@ func (ctx *Context) GetData(key string) any {
 	return ctx.data[key]
 }
 
-func (ctx *Context) Next() IResponse {
-	ctx.currentHandler++
-
-	if ctx.currentHandler >= uint8(len(ctx.handlers)) {
-		return config.DefaultHandler(ctx)
+func (ctx *Context) Next() Handler {
+	var h Handler
+	if ctx.currentHandler >= ctx.handlerCount {
+		h = config.DefaultHandler
 	} else {
-		return ctx.handlers[ctx.currentHandler](ctx)
+		h = ctx.handlers[ctx.currentHandler]
 	}
+
+	ctx.currentHandler++
+	return h
 }
 
 func (ctx *Context) Body(out any) IResponse {

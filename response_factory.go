@@ -10,6 +10,10 @@ func Success(body any) IResponse {
 	return Response(http.StatusOK, body)
 }
 
+func Created(body any) IResponse {
+	return Response(http.StatusCreated, body)
+}
+
 func BadRequest(body any) IResponse {
 	return Response(http.StatusBadRequest, body)
 }
